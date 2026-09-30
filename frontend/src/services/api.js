@@ -1,7 +1,24 @@
 import axios from 'axios';
 
+let apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '';
+
+// Smart auto-correction and fallback for production cloud deployment
+if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+  if (!apiBaseUrl) {
+    apiBaseUrl = 'https://defense-backend-uarg.onrender.com';
+  }
+}
+
+if (apiBaseUrl.startsWith('http://')) {
+  apiBaseUrl = apiBaseUrl.replace('http://', 'https://');
+}
+
+if (apiBaseUrl.includes('defence-backend-uarg')) {
+  apiBaseUrl = apiBaseUrl.replace('defence-backend-uarg', 'defense-backend-uarg');
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '',
+  baseURL: apiBaseUrl,
   headers: {
     'Content-Type': 'application/json',
   },
